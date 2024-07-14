@@ -2,13 +2,15 @@ module decodificadores(estado_in,unid_in,dez_in,unid_out,dez_out,estado_out);
 	input [1:0]estado_in,dez_in;
 	input [3:0]unid_in;
 	output [6:0]dez_out,unid_out,estado_out;
-	wire [12:0]aux;
+	wire [14:0]aux;
 	
 	//Decodificador estado
 	// Estado a
 	and(estado_out[0],estado_in[0],estado_in[1]);
 	// Estado b
-	or(estado_out[1],!estado_in[0],estado_in[1]);
+	xnor(aux[13],estado_in[1],estado_in[0]);
+	and(aux[14],!estado_in[0],estado_in[1]);
+	or(estado_out[1],aux[14],aux[13]);
 	// Estado c
 	xnor(estado_out[2],estado_in[0],estado_in[1]);
 	// Estado d
